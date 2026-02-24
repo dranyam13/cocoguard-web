@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Settings API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #15803d;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Settings API Test</h1>
+    
+    <div class="test-section">
+        <h3>1. Login First</h3>
+        <input type="text" id="username" placeholder="Username" value="admin">
+        <input type="password" id="password" placeholder="Password" value="admin123">
+        <button onclick="login()">Login</button>
+        <pre id="login-result"></pre>
+    </div>
+
+    <div class="test-section">
+        <h3>2. Get Current Settings</h3>
+        <button onclick="getSettings()">Get Settings</button>
+        <pre id="get-result"></pre>
+    </div>
+
+    <div class="test-section">
+        <h3>3. Update Settings</h3>
+        <button onclick="updateSettings()">Update Settings</button>
+        <pre id="update-result"></pre>
+    </div>
+
+    <div class="test-section">
+        <h3>4. Reset Settings</h3>
+        <button onclick="resetSettings()">Reset to Defaults</button>
+        <pre id="reset-result"></pre>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let token = '';
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const resultEl = document.getElementById('login-result');
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    token = data.access_token;
+                    localStorage.setItem('token', token);
+                    resultEl.innerHTML = `<span class="success">✓ Login successful!</span>\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultEl.innerHTML = `<span class="error">✗ Login failed!</span>\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultEl.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+            }
+        }
+
+        async function getSettings() {
+            const resultEl = document.getElementById('get-result');
+            
+            if (!token) {
+                token = localStorage.getItem('token');
+            }
+            
+            if (!token) {
+                resultEl.innerHTML = '<span class="error">Please login first!</span>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/settings/`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultEl.innerHTML = `<span class="success">✓ Settings retrieved!</span>\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultEl.innerHTML = `<span class="error">✗ Failed to get settings!</span>\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultEl.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+            }
+        }
+
+        async function updateSettings() {
+            const resultEl = document.getElementById('update-result');
+            
+            if (!token) {
+                token = localStorage.getItem('token');
+            }
+            
+            if (!token) {
+                resultEl.innerHTML = '<span class="error">Please login first!</span>';
+                return;
+            }
+            
+            const updateData = {
+                email_notifications: true,
+                sms_notifications: true,
+                push_notifications: false,
+                two_factor_enabled: true,
+                theme: 'dark',
+                language: 'fil'
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/settings/`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultEl.innerHTML = `<span class="success">✓ Settings updated!</span>\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultEl.innerHTML = `<span class="error">✗ Failed to update settings!</span>\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultEl.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+            }
+        }
+
+        async function resetSettings() {
+            const resultEl = document.getElementById('reset-result');
+            
+            if (!token) {
+                token = localStorage.getItem('token');
+            }
+            
+            if (!token) {
+                resultEl.innerHTML = '<span class="error">Please login first!</span>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/settings/reset`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultEl.innerHTML = `<span class="success">✓ Settings reset to defaults!</span>\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultEl.innerHTML = `<span class="error">✗ Failed to reset settings!</span>\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultEl.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+            }
+        }
+
+        // Load token from localStorage on page load
+        window.onload = () => {
+            token = localStorage.getItem('token') || '';
+            if (token) {
+                document.getElementById('login-result').innerHTML = '<span class="success">✓ Token loaded from localStorage</span>';
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<style>
+/* Pest Alerts Page Styles - Inline for reliability */
+.pest-alerts-page {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+}
+
+.page-header p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 4px 0 0 0;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-refresh, .btn-mark-read {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid #e5e7eb;
+    background: white;
+    color: #374151;
+}
+
+.btn-refresh:hover, .btn-mark-read:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.btn-mark-read {
+    background: #22c55e;
+    color: white;
+    border-color: #22c55e;
+}
+
+.btn-mark-read:hover {
+    background: #16a34a;
+}
+
+/* Stats Cards */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+    .stats-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 500px) {
+    .stats-cards { grid-template-columns: 1fr; }
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.stat-card.critical {
+    border-left: 4px solid #ef4444;
+}
+
+.stat-card .number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.stat-card.critical .number {
+    color: #dc2626;
+}
+
+.stat-card .label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+}
+
+.search-box::before {
+    content: '🔍';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.filter-select {
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #22c55e;
+}
+
+/* Alerts Container */
+.alerts-container {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Loading & Empty States */
+.loading-state, .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.loading-state .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #22c55e;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-state .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+/* Alert Items */
+.alert-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s;
+}
+
+.alert-item:last-child {
+    border-bottom: none;
+}
+
+.alert-item:hover {
+    background: #fafafa;
+}
+
+.alert-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.alert-icon.critical {
+    background: #fef2f2;
+}
+
+.alert-icon.normal {
+    background: #fefce8;
+}
+
+.alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.alert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+    gap: 12px;
+}
+
+.alert-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.alert-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.alert-badge.critical {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.alert-badge.warning {
+    background: #fefce8;
+    color: #ca8a04;
+}
+
+.pest-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.alert-time {
+    font-size: 13px;
+    color: #9ca3af;
+    white-space: nowrap;
+}
+
+.alert-message {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.5;
+    margin: 0 0 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.alert-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.alert-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.scan-id {
+    font-size: 12px;
+    color: #9ca3af;
+    background: #f3f4f6;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.alert-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+}
+
+.btn-action.secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.btn-action.secondary:hover {
+    background: #e5e7eb;
+}
+
+.btn-action.primary {
+    background: #22c55e;
+    color: white;
+}
+
+.btn-action.primary:hover {
+    background: #16a34a;
+}
+
+.hidden { display: none !important; }
+</style>
+
+<div class="pest-alerts-page">
+    <!-- Header -->
+    <div class="page-header">
+        <div>
+            <h1 data-i18n="notifications.title">🔔 Pest Alerts</h1>
+            <p data-i18n="notifications.subtitle">Monitor and manage pest detection alerts from the field</p>
+        </div>
+        <div class="header-buttons">
+            <button class="btn-refresh" id="refreshNotificationsBtn" data-i18n="btn.refresh">
+                🔄 Refresh
+            </button>
+            <button class="btn-mark-read" id="markAllReadBtn" data-i18n="btn.mark_all_read">
+                ✓ Mark All Read
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="number" id="totalAlerts">0</div>
+            <div class="label" data-i18n="notifications.total_alerts">Total Alerts</div>
+        </div>
+        <div class="stat-card critical">
+            <div class="number" id="criticalCount">0</div>
+            <div class="label" data-i18n="notifications.critical_apw">Critical (APW)</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="todayAlerts">0</div>
+            <div class="label" data-i18n="notifications.today">Today</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="locationsCount">0</div>
+            <div class="label" data-i18n="notifications.locations">Locations</div>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="search-box">
+            <input type="text" id="alertSearchInput" placeholder="Search alerts..." data-i18n-placeholder="notifications.search">
+        </div>
+        <select id="alertFilterType" class="filter-select">
+            <option value="all">All Types</option>
+            <option value="apw">Critical Only</option>
+            <option value="other">Other</option>
+        </select>
+        <select id="alertFilterTime" class="filter-select">
+            <option value="all">All Time</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+        </select>
+    </div>
+
+    <!-- Alerts Container -->
+    <div class="alerts-container">
+        <!-- Loading -->
+        <div id="notificationsLoading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading alerts...</p>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="notificationsEmpty" class="empty-state hidden">
+            <div class="icon">✅</div>
+            <h3 data-i18n="notifications.no_alerts">No Alerts</h3>
+            <p data-i18n="notifications.all_clear">All clear! No pest alerts at this time.</p>
+        </div>
+        
+        <!-- Alerts List -->
+        <div id="notificationsList" class="alerts-list hidden"></div>
+    </div>
+</div>
+
+<!-- Scan Details Modal -->
+<div id="scanDetailsModal" class="scan-modal" style="display: none;">
+    <div class="scan-modal-overlay" onclick="closeScanDetailsModal()"></div>
+    <div class="scan-modal-content">
+        <div class="scan-modal-header">
+            <h3 id="scanDetailsTitle" data-i18n="scan.details">Scan Details</h3>
+            <button class="scan-modal-close" onclick="closeScanDetailsModal()">&times;</button>
+        </div>
+        <div class="scan-modal-body" id="scanDetailsBody">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading scan details...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Scan Details Modal */
+.scan-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scan-modal.active {
+    display: flex !important;
+}
+
+.scan-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.scan-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+    /* Flex layout for fixed header/scrollable body */
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.scan-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+.scan-modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.scan-modal-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.scan-modal-close:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.scan-modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.scan-detail-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.scan-detail-image:hover {
+    transform: scale(1.02);
+}
+
+.scan-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.scan-detail-item {
+    background: #f9fafb;
+    padding: 14px;
+    border-radius: 8px;
+}
+
+.scan-detail-label {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.scan-detail-value {
+    font-size: 15px;
+    color: #111827;
+    font-weight: 500;
+}
+
+.scan-detail-full {
+    grid-column: 1 / -1;
+}
+
+.scan-detail-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.scan-detail-actions .btn-action {
+    flex: 1;
+}
+
+@media (max-width: 600px) {
+    .scan-detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .scan-modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+}
+</style>

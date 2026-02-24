@@ -1,0 +1,226 @@
+/* Knowledge Base Page Styles */
+
+.knowledge-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+thead {
+    background: #f9fafb;
+}
+
+th {
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 0;
+    margin: 0;
+    backdrop-filter: blur(4px);
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #1f2937;
+    font-size: 24px;
+}
+
+.modal-content form {
+    margin-top: 20px;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+    outline: none;
+    border-color: #2d7a3e;
+    box-shadow: 0 0 0 3px rgba(45, 122, 62, 0.1);
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+}
+
+.modal-content small {
+    display: block;
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* Dark Theme */
+body.theme-dark thead {
+    background: #374151;
+}
+
+body.theme-dark th {
+    color: #d1d5db;
+    border-bottom-color: #374151;
+}
+
+body.theme-dark td {
+    color: #d1d5db;
+    border-bottom-color: #374151;
+}
+
+body.theme-dark tbody tr:hover {
+    background: #374151;
+}
+
+body.theme-dark .modal-content {
+    background: #1f2937;
+}
+
+body.theme-dark .modal-content h2 {
+    color: #f3f4f6;
+}
+
+body.theme-dark .modal-content input,
+body.theme-dark .modal-content select,
+body.theme-dark .modal-content textarea {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f3f4f6;
+}
+
+body.theme-dark .modal-content input:focus,
+body.theme-dark .modal-content select:focus,
+body.theme-dark .modal-content textarea:focus {
+    border-color: #22c55e;
+}
+
+body.theme-dark .modal-content label {
+    color: #d1d5db;
+}
+
+body.theme-dark .modal-content small {
+    color: #9ca3af;
+}
+
+/* ========== KNOWLEDGE PAGE RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .knowledge-controls {
+        flex-wrap: wrap;
+    }
+
+    .knowledge-controls .btn {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    table {
+        min-width: 500px;
+    }
+
+    th, td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    .modal-content {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        min-width: 400px;
+    }
+
+    th, td {
+        padding: 8px 6px;
+        font-size: 11px;
+    }
+
+    .modal-content {
+        padding: 16px;
+    }
+}

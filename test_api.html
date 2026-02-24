@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>CocoGuard API Test</h1>
+    <button onclick="testLogin()">1. Test Login</button>
+    <button onclick="testListUsers()">2. Test List Users</button>
+    <button onclick="clearCache()">3. Clear Cache & Reload</button>
+    <pre id="output"></pre>
+
+    <script>
+        const output = document.getElementById('output');
+        let token = localStorage.getItem('access_token');
+
+        function log(message) {
+            output.textContent += message + '\n';
+            console.log(message);
+        }
+
+        function clearCache() {
+            localStorage.clear();
+            location.reload(true);
+        }
+
+        async function testLogin() {
+            output.textContent = '';
+            log('Testing login...');
+            
+            try {
+                const response = await fetch('http://localhost:8000/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email_or_username: 'admin@cocoguard.com',
+                        password: 'cocoguard'
+                    })
+                });
+
+                const data = await response.json();
+                log('✅ Login successful!');
+                log('Token: ' + data.access_token.substring(0, 50) + '...');
+                log('User: ' + JSON.stringify(data.user, null, 2));
+                
+                token = data.access_token;
+                localStorage.setItem('access_token', token);
+                
+            } catch (error) {
+                log('❌ Login failed: ' + error.message);
+            }
+        }
+
+        async function testListUsers() {
+            output.textContent = '';
+            
+            if (!token) {
+                log('❌ No token found. Please login first.');
+                return;
+            }
+
+            log('Testing list users...');
+            log('Using token: ' + token.substring(0, 50) + '...');
+            
+            try {
+                const response = await fetch('http://localhost:8000/users', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    log('❌ API Error: ' + JSON.stringify(error, null, 2));
+                    return;
+                }
+
+                const users = await response.json();
+                log('✅ Users loaded successfully!');
+                log('Total users: ' + users.length);
+                log('\nUsers data:');
+                log(JSON.stringify(users, null, 2));
+                
+            } catch (error) {
+                log('❌ Request failed: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+/* Dashboard Page Styles */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.stat-card h3 {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 10px;
+}
+
+.stat-card .value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 5px;
+}
+
+.stat-card .change {
+    font-size: 13px;
+    color: #16a34a;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chart-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    height: 360px;
+    max-height: 360px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.chart-card h3 {
+    font-size: 15px;
+    color: #1f2937;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.chart-placeholder {
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 200px;
+    gap: 15px;
+    padding: 0 20px;
+}
+
+.bar-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.bar {
+    width: 100%;
+    background: linear-gradient(to top, #16a34a, #22c55e);
+    border-radius: 4px 4px 0 0;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.bar:hover {
+    opacity: 0.8;
+    transform: scaleY(1.05);
+}
+
+.bar-label {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Chart container styles */
+.chart-container {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    height: 280px;
+    max-height: 280px;
+    min-height: 200px;
+    overflow: visible;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Status badge for pest detection */
+.status-badge.status-pest {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Improved chart card hover effect */
+.chart-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Loading state for charts */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    color: #6b7280;
+}
+
+.chart-loading::after {
+    content: '';
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #22c55e;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   Chart Zoom Modal Feature
+   ========================================== */
+
+/* Zoom Modal Overlay */
+#chartZoomModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+#chartZoomModal.active {
+    display: flex;
+}
+
+#chartZoomModal .zoom-content {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 900px;
+    height: 80%;
+    max-height: 650px;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+#chartZoomModal .zoom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#chartZoomModal .zoom-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+#chartZoomModal .zoom-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+#chartZoomModal .zoom-close:hover {
+    background: #ef4444;
+    color: white;
+}
+
+#chartZoomModal .zoom-chart-container {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+}
+
+#chartZoomModal .zoom-chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Chart card click hint */
+.chart-card {
+    cursor: pointer;
+}
+
+.chart-card::after {
+    content: '🔍 Click to expand';
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 11px;
+    color: #9ca3af;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.chart-card:hover::after {
+    opacity: 1;
+}
+
+.chart-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Dark Theme */
+body.theme-dark .stat-card {
+    background: #1f2937;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+body.theme-dark .stat-card h3 {
+    color: #9ca3af;
+}
+
+body.theme-dark .stat-card .value {
+    color: #f3f4f6;
+}
+
+body.theme-dark .chart-card {
+    background: #1f2937;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+body.theme-dark .chart-card h3 {
+    color: #f3f4f6;
+}
+
+body.theme-dark .chart-placeholder {
+    background: #374151;
+}
+
+body.theme-dark .bar-label {
+    color: #9ca3af;
+}
+
+body.theme-dark .chart-loading {
+    color: #9ca3af;
+}
+
+body.theme-dark .chart-loading::after {
+    border-color: #4b5563;
+    border-top-color: #22c55e;
+}
+
+body.theme-dark #chartZoomModal .zoom-content {
+    background: #1f2937;
+}
+
+body.theme-dark #chartZoomModal .zoom-header {
+    border-bottom-color: #374151;
+}
+
+body.theme-dark #chartZoomModal .zoom-title {
+    color: #f3f4f6;
+}
+
+body.theme-dark #chartZoomModal .zoom-close {
+    background: #374151;
+    color: #9ca3af;
+}
+
+body.theme-dark #chartZoomModal .zoom-close:hover {
+    background: #ef4444;
+    color: white;
+}
+
+body.theme-dark .chart-card::after {
+    color: #6b7280;
+}
+
+/* ========== DASHBOARD RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card {
+        height: auto;
+        max-height: none;
+    }
+
+    .chart-container {
+        height: 250px;
+        max-height: 250px;
+    }
+
+    #chartZoomModal {
+        padding: 20px;
+    }
+
+    #chartZoomModal .zoom-content {
+        width: 95%;
+        max-width: none;
+        height: 70vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-card .value {
+        font-size: 24px;
+    }
+
+    .stat-card h3 {
+        font-size: 12px;
+    }
+
+    .chart-card {
+        padding: 16px;
+        height: auto;
+        max-height: none;
+    }
+
+    .chart-card h3 {
+        font-size: 14px;
+    }
+
+    .chart-container {
+        height: 220px;
+        max-height: 220px;
+        min-height: 180px;
+    }
+
+    .chart-card::after {
+        display: none;
+    }
+
+    #chartZoomModal {
+        padding: 10px;
+    }
+
+    #chartZoomModal .zoom-content {
+        width: 98%;
+        height: 75vh;
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    #chartZoomModal .zoom-title {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px;
+    }
+
+    .stat-card .value {
+        font-size: 20px;
+    }
+
+    .chart-container {
+        height: 180px;
+        max-height: 180px;
+        min-height: 150px;
+    }
+
+    .bar-chart {
+        height: 150px;
+        gap: 6px;
+        padding: 0 6px;
+    }
+
+    .bar-label {
+        font-size: 9px;
+    }
+}

@@ -1,0 +1,26 @@
+<div class="table-card">
+        <h3 data-i18n="knowledge.title">Knowledge Base</h3>
+        <div class="knowledge-controls">
+            <button class="btn btn-primary" id="addArticleBtn" onclick="if(window.showAddArticleModal) window.showAddArticleModal(); else alert('Module not loaded yet');" data-i18n="btn.add_article">Add Article</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th data-i18n="table.title">Article Title</th>
+                    <th data-i18n="table.content">Content</th>
+                    <th data-i18n="table.category">Category</th>
+                    <th data-i18n="table.active">Active</th>
+                    <th data-i18n="table.date_created">Date Created</th>
+                    <th data-i18n="table.last_updated">Last Updated</th>
+                    <th data-i18n="table.actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="knowledgeTableBody">
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 20px;">
+                        <div style="color: #666;">Loading articles...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

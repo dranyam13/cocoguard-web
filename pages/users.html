@@ -1,0 +1,403 @@
+<div class="table-card">
+        <h3 data-i18n="users.title">User Management</h3>
+        <div class="users-controls">
+            <button class="btn btn-primary" id="addUserBtn" onclick="window.usersModule.openAddUserModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                Add User
+            </button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th data-i18n="table.id">ID</th>
+                    <th data-i18n="table.username">Username</th>
+                    <th data-i18n="table.email">Email</th>
+                    <th data-i18n="table.role">Role</th>
+                    <th data-i18n="table.status">Status</th>
+                    <th data-i18n="table.date_joined">Date Joined</th>
+                    <th data-i18n="table.actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="usersTableBody">
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 20px;">
+                        <div class="loading-spinner">Loading users...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="modal" style="display: none;">
+        <div class="modal-content modal-form">
+            <div class="modal-header-pro">
+                <div class="modal-icon-wrapper">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </div>
+                <div class="modal-title-wrapper">
+                    <h3>Add New User</h3>
+                    <p>Create a new user account</p>
+                </div>
+                <button class="modal-close-pro" id="close-add-user-modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body-pro">
+                <form id="add-user-form">
+                    <div class="form-row">
+                        <div class="form-group-pro">
+                            <label for="add-username">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Username
+                            </label>
+                            <div class="input-wrapper-pro">
+                                <input type="text" id="add-username" name="username" required placeholder="Enter username" minlength="3">
+                            </div>
+                        </div>
+                        <div class="form-group-pro">
+                            <label for="add-email">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                Email Address
+                            </label>
+                            <div class="input-wrapper-pro">
+                                <input type="email" id="add-email" name="email" required placeholder="user@example.com">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-pro">
+                            <label for="add-full-name">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Full Name
+                            </label>
+                            <div class="input-wrapper-pro">
+                                <input type="text" id="add-full-name" name="full_name" placeholder="Enter full name (optional)">
+                            </div>
+                        </div>
+                        <div class="form-group-pro">
+                            <label for="add-phone">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                Phone Number
+                            </label>
+                            <div class="input-wrapper-pro">
+                                <input type="tel" id="add-phone" name="phone" placeholder="Enter phone (optional)">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-pro">
+                            <label for="add-password">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                                Password
+                            </label>
+                            <div class="input-wrapper-pro">
+                                <input type="password" id="add-password" name="password" required placeholder="Min. 6 characters" minlength="6">
+                                <button type="button" class="toggle-password-pro" data-target="add-password">
+                                    <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-closed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group-pro">
+                            <label for="add-role">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                Role
+                            </label>
+                            <select id="add-role" name="role" class="settings-select" style="width: 100%; padding: 12px 15px;">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions-pro">
+                        <button type="button" class="btn-cancel-pro" id="cancel-add-user">Cancel</button>
+                        <button type="submit" class="btn-submit-pro" id="submit-add-user">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <line x1="20" y1="8" x2="20" y2="14"></line>
+                                <line x1="23" y1="11" x2="17" y2="11"></line>
+                            </svg>
+                            Create User
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="edit-user-modal" class="modal" style="display: none;">
+        <div class="modal-content modal-form" style="border-radius: 16px; max-width: 650px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+            <style>
+                @keyframes editModalSlideIn {
+                    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                #edit-user-modal .modal-content {
+                    animation: editModalSlideIn 0.3s ease-out;
+                }
+                #edit-user-modal .form-input-pro:focus,
+                #edit-user-modal input:focus {
+                    border-color: #16a34a !important;
+                    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
+                    outline: none;
+                }
+                #edit-user-modal select:focus {
+                    border-color: #16a34a !important;
+                    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
+                    outline: none;
+                }
+                #edit-user-modal .btn-save-edit:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4) !important;
+                }
+                #edit-user-modal .btn-cancel-edit:hover {
+                    background: #f3f4f6 !important;
+                }
+                #edit-user-modal .modal-close-btn:hover {
+                    background: rgba(255,255,255,0.3) !important;
+                    transform: rotate(90deg);
+                }
+            </style>
+            <div class="modal-header-pro" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 24px 28px; border-radius: 16px 16px 0 0; display: flex; align-items: center; gap: 16px;">
+                <div class="modal-icon-wrapper" style="width: 52px; height: 52px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                </div>
+                <div class="modal-title-wrapper" style="flex-grow: 1;">
+                    <h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.3px;">Edit User</h3>
+                    <p style="margin: 4px 0 0 0; opacity: 0.9; font-size: 14px; font-weight: 400;">Update user information and settings</p>
+                </div>
+                <button class="modal-close-btn" id="close-edit-user-modal" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body-pro" style="padding: 28px;">
+                <form id="edit-user-form">
+                    <input type="hidden" id="edit-user-id" name="user_id">
+                    
+                    <!-- Account Information Section -->
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0fdf4;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span style="font-size: 14px; font-weight: 600; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px;">Account Information</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group-pro">
+                                <label for="edit-username" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #374151;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    </svg>
+                                    Username
+                                </label>
+                                <div class="input-wrapper-pro">
+                                    <input type="text" id="edit-username" name="username" readonly style="background: #f9fafb; cursor: not-allowed; color: #6b7280; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px 14px;">
+                                </div>
+                                <small style="color: #9ca3af; font-size: 11px; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Cannot be changed
+                                </small>
+                            </div>
+                            <div class="form-group-pro">
+                                <label for="edit-email" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #374151;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                    Email Address
+                                </label>
+                                <div class="input-wrapper-pro">
+                                    <input type="email" id="edit-email" name="email" readonly style="background: #f9fafb; cursor: not-allowed; color: #6b7280; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px 14px;">
+                                </div>
+                                <small style="color: #9ca3af; font-size: 11px; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Cannot be changed
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Personal Details Section -->
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0fdf4;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                            <span style="font-size: 14px; font-weight: 600; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px;">Personal Details</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group-pro">
+                                <label for="edit-full-name" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #374151;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    Full Name
+                                </label>
+                                <div class="input-wrapper-pro">
+                                    <input type="text" id="edit-full-name" name="full_name" placeholder="Enter full name" style="border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px 14px;">
+                                </div>
+                            </div>
+                            <div class="form-group-pro">
+                                <label for="edit-phone" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #374151;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                    Phone Number
+                                </label>
+                                <div class="input-wrapper-pro">
+                                    <input type="tel" id="edit-phone" name="phone" placeholder="Enter phone number" style="border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px 14px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Role & Status Section -->
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0fdf4;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span style="font-size: 14px; font-weight: 600; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px;">Role & Status</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group-pro">
+                                <label for="edit-role" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #374151;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    </svg>
+                                    User Role
+                                </label>
+                                <select id="edit-role" name="role" class="settings-select" style="width: 100%; padding: 12px 15px; border: 2px solid #e5e7eb; border-radius: 10px;">
+                                    <option value="user">👤 User</option>
+                                    <option value="admin">🛡️ Admin</option>
+                                </select>
+                            </div>
+                            <div class="form-group-pro">
+                                <label for="edit-status" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #374151;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    Account Status
+                                </label>
+                                <select id="edit-status" name="status" class="settings-select" style="width: 100%; padding: 12px 15px; border: 2px solid #e5e7eb; border-radius: 10px;">
+                                    <option value="active">🟢 Active</option>
+                                    <option value="inactive">🔴 Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Meta Info -->
+                    <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; border: 1px solid #bbf7d0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 36px; height: 36px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span style="font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">User ID</span>
+                                    <strong id="display-user-id" style="display: block; font-size: 14px; color: #166534;">-</strong>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 36px; height: 36px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Date Joined</span>
+                                    <strong id="display-date-joined" style="display: block; font-size: 14px; color: #166534;">-</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="form-actions-pro" style="border-top: 2px solid #f3f4f6; padding-top: 20px; display: flex; justify-content: flex-end; gap: 12px;">
+                        <button type="button" class="btn-cancel-edit" id="cancel-edit-user" style="padding: 12px 24px; border: 2px solid #e5e7eb; background: white; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 500; color: #6b7280; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-save-edit" style="padding: 12px 28px; background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

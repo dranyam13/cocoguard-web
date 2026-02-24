@@ -1,0 +1,89 @@
+/* Pest Management Page Styles */
+
+.pest-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+thead {
+    background: #f9fafb;
+}
+
+th {
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Dark Theme */
+body.theme-dark thead {
+    background: #374151;
+}
+
+body.theme-dark th {
+    color: #d1d5db;
+    border-bottom-color: #374151;
+}
+
+body.theme-dark td {
+    color: #d1d5db;
+    border-bottom-color: #374151;
+}
+
+body.theme-dark tbody tr:hover {
+    background: #374151;
+}
+
+/* ========== PEST MANAGEMENT RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .pest-controls {
+        flex-wrap: wrap;
+    }
+
+    .pest-controls .btn {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    table {
+        min-width: 500px;
+    }
+
+    th, td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        min-width: 400px;
+    }
+
+    th, td {
+        padding: 8px 6px;
+        font-size: 11px;
+    }
+}

@@ -1,0 +1,522 @@
+<div class="settings-content">
+            <!-- Profile Settings -->
+            <div class="settings-category">
+                <h3 data-i18n="settings.profile_settings">Profile Settings</h3>
+                
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.profile_visible">Profile Visibility</strong>
+                        <p data-i18n="settings.profile_visible_desc">Make your profile visible to other users</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="profile_visible" data-setting="profile_visible">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.language">Language</strong>
+                        <p data-i18n="settings.language_desc">Select your preferred language</p>
+                    </div>
+                    <select id="language" class="settings-select" data-setting="language">
+                        <option value="en">English</option>
+                        <option value="fil">Filipino</option>
+                    </select>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.theme">Theme</strong>
+                        <p data-i18n="settings.theme_desc">Choose your display theme</p>
+                    </div>
+                    <select id="theme" class="settings-select" data-setting="theme">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="settings-category">
+                <h3 data-i18n="settings.notification_settings">Notification Settings</h3>
+                
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.email_notif">Email Notifications</strong>
+                        <p data-i18n="settings.email_notif_desc">Receive notifications via email</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="email_notifications" data-setting="email_notifications">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.sms_notif">SMS Notifications</strong>
+                        <p data-i18n="settings.sms_notif_desc">Receive notifications via SMS</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="sms_notifications" data-setting="sms_notifications">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.push_notif">Push Notifications</strong>
+                        <p data-i18n="settings.push_notif_desc">Receive push notifications in browser</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="push_notifications" data-setting="push_notifications">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="settings-category">
+                <h3 data-i18n="settings.security">Security Settings</h3>
+                
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.two_factor">Two-Factor Authentication</strong>
+                        <p data-i18n="settings.two_factor_desc">Enable 2FA for enhanced security</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="two_factor_enabled" data-setting="two_factor_enabled">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.change_password">Change Password</strong>
+                        <p data-i18n="settings.change_password_desc">Update your account password</p>
+                    </div>
+                    <button class="btn btn-secondary" id="change-password-btn" data-i18n="settings.change_password">Change Password</button>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.session">Session Management</strong>
+                        <p>Sign out from all devices</p>
+                    </div>
+                    <button class="btn btn-danger" id="logout-all-btn" data-i18n="settings.signout_all">Sign Out All Devices</button>
+                </div>
+            </div>
+
+            <!-- Data & Privacy Settings -->
+            <div class="settings-category">
+                <h3 data-i18n="settings.data_privacy">Data & Privacy</h3>
+                
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.auto_backup">Automatic Backup</strong>
+                        <p data-i18n="settings.auto_backup_desc">Automatically backup your data</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="auto_backup" data-setting="auto_backup">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- Backup Management Section -->
+                <div class="settings-section backup-management">
+                    <div style="width: 100%;">
+                        <strong>Backup Management</strong>
+                        <p style="margin-bottom: 15px;">Create, download, and manage system backups</p>
+                        
+                        <!-- Backup Stats -->
+                        <div id="backup-stats" class="backup-stats" style="background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Backups</span>
+                                    <span class="stat-value" id="stat-total-backups">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Storage Used</span>
+                                    <span class="stat-value" id="stat-storage">0 KB</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Last Backup</span>
+                                    <span class="stat-value" id="stat-last-backup">Never</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Backup Actions -->
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                            <button class="btn btn-primary" id="create-backup-btn" style="display: flex; align-items: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Create Backup
+                            </button>
+                            <button class="btn btn-secondary" id="refresh-backups-btn" style="display: flex; align-items: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10"></polyline>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                </svg>
+                                Refresh
+                            </button>
+                        </div>
+                        
+                        <!-- Backup List -->
+                        <div id="backup-list" class="backup-list" style="max-height: 300px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+                            <div class="backup-loading" style="padding: 20px; text-align: center; color: var(--text-secondary);">
+                                Loading backups...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.data_sharing">Data Sharing</strong>
+                        <p data-i18n="settings.data_sharing_desc">Share anonymized data for research</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="data_sharing" data-setting="data_sharing">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-section">
+                    <div>
+                        <strong data-i18n="settings.export_data">Export My Data</strong>
+                        <p data-i18n="settings.export_data_desc">Download all your data in JSON format</p>
+                    </div>
+                    <button class="btn btn-secondary" id="export-data-btn" data-i18n="settings.export_data">Export Data</button>
+                </div>
+
+                <div class="settings-section danger-zone">
+                    <div>
+                        <strong data-i18n="settings.delete_account">Delete Account</strong>
+                        <p data-i18n="settings.delete_account_desc">Permanently delete your account and all data</p>
+                    </div>
+                    <button class="btn btn-danger" id="delete-account-btn" data-i18n="settings.delete_account">Delete Account</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="settings-actions">
+                <button class="btn btn-primary" id="save-settings-btn" data-i18n="settings.save_all">Save All Settings</button>
+                <button class="btn btn-secondary" id="reset-settings-btn" data-i18n="settings.reset_defaults">Reset to Defaults</button>
+            </div>
+        </div>
+
+        <!-- Change Password Modal -->
+        <div id="change-password-modal" class="modal" style="display: none; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content modal-password-v2" style="display: flex; flex-direction: column; max-height: 90vh; overflow: hidden; width: 100%; max-width: 500px; border-radius: 16px; background: white;">
+                
+                <!-- Fixed Header Area -->
+                <div style="flex-shrink: 0; position: relative; z-index: 10; width: 100%;">
+                    <button class="modal-close" id="close-password-modal" style="position: absolute; top: 15px; right: 15px; z-index: 20; color: rgba(255,255,255,0.9); background: transparent; font-size: 28px; border: none; cursor: pointer; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">&times;</button>
+                    
+                    <!-- Step Indicators -->
+                    <div class="modal-steps" id="pwd-steps">
+                        <div class="step-item active" id="step-indicator-1">
+                            <div class="step-num">1</div>
+                            <span>Password</span>
+                        </div>
+                        <div class="step-line" id="step-line"></div>
+                        <div class="step-item" id="step-indicator-2">
+                            <div class="step-num">2</div>
+                            <span>Verify</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scrollable Body Wrapper -->
+                <div style="flex-grow: 1; overflow-y: auto;">
+                    <!-- Step 1: Password Form -->
+                    <div id="pwd-step-1">
+                        <div class="modal-body" style="padding: 20px 30px 30px;">
+                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 25px;">
+                                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 20px; font-weight: 600; color: #1f2937;">Change Password</h3>
+                                    <p style="margin: 4px 0 0 0; font-size: 14px; color: #6b7280;">Secure your account with a new password</p>
+                                </div>
+                            </div>
+                        
+                            <form id="change-password-form">
+                                <div class="form-group" style="margin-bottom: 18px;">
+                                    <label for="current-password" style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Current Password</label>
+                                    <div class="pwd-input-wrapper">
+                                        <input type="password" id="current-password" name="current_password" 
+                                            required placeholder="Enter your current password" class="pwd-input">
+                                        <button type="button" class="toggle-pwd" data-target="current-password">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div style="height: 1px; background: #e5e7eb; margin: 20px 0;"></div>
+                                
+                                <div class="form-group" style="margin-bottom: 18px;">
+                                    <label for="new-password" style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">New Password</label>
+                                    <div class="pwd-input-wrapper">
+                                        <input type="password" id="new-password" name="new_password" 
+                                            required placeholder="Minimum 6 characters" minlength="6" class="pwd-input">
+                                        <button type="button" class="toggle-pwd" data-target="new-password">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="password-strength" id="password-strength">
+                                        <div class="strength-bar-wrap">
+                                            <div class="str-bar"></div>
+                                            <div class="str-bar"></div>
+                                            <div class="str-bar"></div>
+                                            <div class="str-bar"></div>
+                                        </div>
+                                        <span class="str-text"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 20px;">
+                                    <label for="confirm-password" style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Confirm New Password</label>
+                                    <div class="pwd-input-wrapper">
+                                        <input type="password" id="confirm-password" name="confirm_password" 
+                                            required placeholder="Re-enter your new password" class="pwd-input">
+                                        <button type="button" class="toggle-pwd" data-target="confirm-password">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="password-match" id="password-match"></div>
+                                </div>
+                                
+                                <div class="modal-actions-center">
+                                    <button type="button" class="btn btn-secondary" id="cancel-password-change" style="padding: 12px 24px;">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" id="submit-password-change" style="padding: 12px 24px; background: linear-gradient(135deg, #16a34a, #15803d); display: flex; align-items: center; gap: 8px;">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>
+                                        Send Code
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Verification -->
+                    <div id="pwd-step-2" style="display: none;">
+                        <div class="modal-header-2fa">
+                            <div class="modal-icon-large">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <h3 style="margin: 0; font-size: 22px;">Verify Your Email</h3>
+                            <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 14px;">Enter the 6-digit code sent to <strong id="user-email-display">your email</strong></p>
+                        </div>
+                        <div class="modal-body" style="padding: 30px;">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label for="verification-code-input" style="display: block; font-weight: 600; margin-bottom: 10px; color: #374151; text-align: center;">Verification Code</label>
+                                <input type="text" id="verification-code-input" class="verify-code-input" placeholder="000000" maxlength="6" inputmode="numeric">
+                            </div>
+                            
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <span id="resend-timer" style="color: #6b7280; font-size: 13px;">Resend code in <strong>60s</strong></span>
+                                <button type="button" id="resend-code-btn" class="btn-link" style="display: none; color: #16a34a; font-weight: 500;">
+                                    🔄 Resend Code
+                                </button>
+                            </div>
+                            
+                            <div class="modal-actions-center">
+                                <button type="button" class="btn btn-secondary" id="back-to-step1" style="padding: 12px 24px;">← Back</button>
+                                <button type="button" class="btn btn-success" id="verify-and-change" style="padding: 12px 24px; background: linear-gradient(135deg, #16a34a, #15803d); display: flex; align-items: center; gap: 8px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Change Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Account Confirmation Modal -->
+        <div id="delete-account-modal" class="modal" style="display: none;">
+            <div class="modal-content modal-danger">
+                <div class="modal-header">
+                    <h3>⚠️ Delete Account</h3>
+                    <button class="modal-close" id="close-delete-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="warning-text">This action is <strong>permanent</strong> and cannot be undone. All your data, including:</p>
+                    <ul class="delete-warning-list">
+                        <li>Profile information</li>
+                        <li>Scan history</li>
+                        <li>Farm data</li>
+                        <li>Settings and preferences</li>
+                    </ul>
+                    <p class="warning-text">...will be permanently deleted.</p>
+                    <div class="form-group">
+                        <label for="delete-confirm-password">Enter your password to confirm:</label>
+                        <input type="password" id="delete-confirm-password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="delete-confirm-text">Type <strong>DELETE</strong> to confirm:</label>
+                        <input type="text" id="delete-confirm-text" placeholder="Type DELETE" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-delete-account">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirm-delete-account" disabled>Delete My Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="settings-loading" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading settings...</p>
+        </div>
+
+        <!-- Two-Factor Authentication Modal -->
+        <div id="twofa-modal" class="modal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <!-- Step Indicators -->
+                <div class="modal-steps" id="twofa-steps">
+                    <div class="step-item active" id="twofa-step-indicator-1">
+                        <div class="step-num">1</div>
+                        <span>Verify</span>
+                    </div>
+                    <div class="step-line" id="twofa-step-line"></div>
+                    <div class="step-item" id="twofa-step-indicator-2">
+                        <div class="step-num">2</div>
+                        <span>Done</span>
+                    </div>
+                </div>
+                
+                <button class="modal-close" id="close-twofa-modal">&times;</button>
+
+                <!-- Step 1: Send Verification Code -->
+                <div id="twofa-step-1">
+                    <div class="modal-header-2fa">
+                        <div class="modal-icon-large">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <h3 style="margin: 0; font-size: 22px;">Enable Two-Factor Authentication</h3>
+                        <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 14px;">Add an extra layer of security to your account</p>
+                    </div>
+                    <div class="modal-body" style="padding: 30px;">
+                        <div class="modal-info-box">
+                            <div class="modal-info-box-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="modal-info-box-content">
+                                <h4>How it works</h4>
+                                <p>
+                                    When 2FA is enabled, you'll receive a verification code via email each time you log in. This ensures only you can access your account.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <p style="color: #6b7280; font-size: 14px; text-align: center; margin-bottom: 20px;">
+                            We'll send a verification code to your registered email address to confirm your identity.
+                        </p>
+                        
+                        <div class="modal-actions-center">
+                            <button type="button" class="btn btn-secondary" id="cancel-twofa-setup" style="padding: 12px 24px;">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="send-twofa-code" style="padding: 12px 24px; background: linear-gradient(135deg, #16a34a, #15803d); display: flex; align-items: center; gap: 8px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                Send Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Enter Verification Code -->
+                <div id="twofa-step-2" style="display: none;">
+                    <div class="modal-header-2fa">
+                        <div class="modal-icon-large">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <h3 style="margin: 0; font-size: 22px;">Verify Your Email</h3>
+                        <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 14px;">Enter the 6-digit code sent to <strong id="twofa-email-display">your email</strong></p>
+                    </div>
+                    <div class="modal-body" style="padding: 30px;">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="twofa-code-input" style="display: block; font-weight: 600; margin-bottom: 10px; color: #374151; text-align: center;">Verification Code</label>
+                            <input type="text" id="twofa-code-input" class="verify-code-input" placeholder="000000" maxlength="6" inputmode="numeric">
+                        </div>
+                        
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <span id="twofa-resend-timer" style="color: #6b7280; font-size: 13px;">Resend code in <strong>60s</strong></span>
+                            <button type="button" id="twofa-resend-btn" class="btn-link" style="display: none; color: #16a34a; font-weight: 500;">
+                                🔄 Resend Code
+                            </button>
+                        </div>
+                        
+                        <div class="modal-actions-center">
+                            <button type="button" class="btn btn-secondary" id="twofa-back-btn" style="padding: 12px 24px;">← Back</button>
+                            <button type="button" class="btn btn-success" id="verify-twofa-code" style="padding: 12px 24px; background: linear-gradient(135deg, #16a34a, #15803d); display: flex; align-items: center; gap: 8px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Enable 2FA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Success -->
+                <div id="twofa-step-3" style="display: none;">
+                    <div class="modal-header-2fa">
+                        <div class="modal-icon-large">
+                            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <h3 style="margin: 0; font-size: 24px;">2FA Enabled!</h3>
+                        <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 15px;">Your account is now more secure</p>
+                    </div>
+                    <div class="modal-body" style="padding: 30px; text-align: center;">
+                        <p style="color: #374151; font-size: 15px; margin-bottom: 25px;">
+                            Two-Factor Authentication has been successfully enabled. From now on, you'll need to enter a verification code sent to your email each time you log in.
+                        </p>
+                        <button type="button" class="btn btn-primary" id="close-twofa-success" style="padding: 12px 40px; background: linear-gradient(135deg, #16a34a, #15803d);">
+                            Done
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>

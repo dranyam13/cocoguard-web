@@ -1,0 +1,167 @@
+<!-- Chart Zoom Modal - Hidden by default -->
+<style>
+#chartZoomModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+#chartZoomModal.active { display: flex !important; }
+#chartZoomModal .zoom-content {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 850px;
+    height: 80vh;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+}
+#chartZoomModal .zoom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+#chartZoomModal .zoom-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+#chartZoomModal .zoom-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#chartZoomModal .zoom-close:hover { background: #ef4444; color: white; }
+#chartZoomModal .zoom-chart-container {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+}
+</style>
+<div id="chartZoomModal">
+    <div class="zoom-content">
+        <div class="zoom-header">
+            <h3 class="zoom-title" id="zoomChartTitle">Chart</h3>
+            <button class="zoom-close" id="zoomCloseBtn">&times;</button>
+        </div>
+        <div class="zoom-chart-container">
+            <canvas id="zoomChartCanvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="stats-grid">
+        <div class="stat-card">
+            <h3 data-i18n="dashboard.total_scans">Total Scans</h3>
+            <div class="value" id="totalScans">0</div>
+            <div class="change" id="totalScansChange">Loading...</div>
+        </div>
+        <div class="stat-card">
+            <h3 data-i18n="dashboard.active_users">Active Users</h3>
+            <div class="value" id="activeUsers">0</div>
+            <div class="change" id="activeUsersChange">Loading...</div>
+        </div>
+        <div class="stat-card">
+            <h3 data-i18n="dashboard.todays_scans">Today's Scans</h3>
+            <div class="value" id="todayScans">0</div>
+            <div class="change" id="todayScansChange">Loading...</div>
+        </div>
+        <div class="stat-card">
+            <h3 data-i18n="dashboard.knowledge_articles">Knowledge Articles</h3>
+            <div class="value" id="totalArticles">0</div>
+            <div class="change" id="totalArticlesChange">Loading...</div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3 data-i18n="dashboard.pest_distribution">🥥 Pest Distribution Overview</h3>
+            <div class="chart-container">
+                <canvas id="pestDistributionChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3 data-i18n="dashboard.monthly_activity">📊 Monthly Scan Activity</h3>
+            <div class="chart-container">
+                <canvas id="monthlyScansChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3 data-i18n="dashboard.top_pests">🐛 Top 5 Detected Pests</h3>
+            <div class="chart-container">
+                <canvas id="topPestsChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3 data-i18n="dashboard.top_farmers">🌴 Top 5 Affected Farmers</h3>
+            <div class="chart-container">
+                <canvas id="topFarmsChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3 data-i18n="dashboard.detection_trend">📈 Detection Trend (Last 7 Days)</h3>
+            <div class="chart-container">
+                <canvas id="detectionTrendChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3 data-i18n="dashboard.accuracy_rate">🏆 Detection Accuracy Rate</h3>
+            <div class="chart-container">
+                <canvas id="accuracyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <h3 data-i18n="dashboard.recent_scans">📋 Recent Scans</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th data-i18n="table.date_time">Date & Time</th>
+                    <th data-i18n="table.location">Location</th>
+                    <th data-i18n="table.pest_type">Pest Detected</th>
+                </tr>
+            </thead>
+            <tbody id="recentScansTableBody">
+                <tr><td colspan="3" style="text-align:center; color:#888;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-card">
+        <h3 data-i18n="dashboard.recent_feedback">💬 Recent Feedback Reports <span style="font-size:0.9em; color:#888;">(showing latest 5)</span></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th data-i18n="table.date_time">Date & Time</th>
+                    <th data-i18n="table.type">Type</th>
+                    <th data-i18n="table.message">Message</th>
+                </tr>
+            </thead>
+            <tbody id="feedbackTableBody">
+                <tr><td colspan="3" style="text-align:center; color:#888;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
