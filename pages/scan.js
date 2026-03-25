@@ -80,9 +80,17 @@ function getFullImageUrl(imageUrl) {
         return imageUrl;
     }
     // Get API base URL safely
-    const baseUrl = (typeof apiClient !== 'undefined' && apiClient.baseURL) 
-        ? apiClient.baseURL 
-        : `${window.location.protocol}//${window.location.hostname}:8000`;
+    const baseUrl = (typeof apiClient !== 'undefined' && apiClient.baseURL)
+        ? apiClient.baseURL
+        : (() => {
+            const host = window.location.hostname;
+            const stored = localStorage.getItem('api_base_url');
+            const isHostedEnv = /\.(workers\.dev|pages\.dev|onrender\.com)$/i.test(host);
+            const invalidStored = isHostedEnv && /(workers\.dev|pages\.dev|onrender\.com):8000/i.test(stored || '');
+            return (!invalidStored && stored) || (isHostedEnv
+                ? 'https://cocoguard-api.onrender.com'
+                : `${window.location.protocol}//${host}:8000`);
+        })();
     // Prepend API base URL for relative paths
     return baseUrl + imageUrl;
 }

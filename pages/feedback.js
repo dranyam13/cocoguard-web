@@ -157,7 +157,13 @@ async function submitResponse(e) {
                 body: payload
             });
         } else {
-            const apiBase = `${window.location.protocol}//${window.location.hostname}:8000`;
+            const host = window.location.hostname;
+            const stored = localStorage.getItem('api_base_url');
+            const isHostedEnv = /\.(workers\.dev|pages\.dev|onrender\.com)$/i.test(host);
+            const invalidStored = isHostedEnv && /(workers\.dev|pages\.dev|onrender\.com):8000/i.test(stored || '');
+            const apiBase = (!invalidStored && stored) || (isHostedEnv
+                ? 'https://cocoguard-api.onrender.com'
+                : `${window.location.protocol}//${host}:8000`);
             const token = localStorage.getItem('token');
             const response = await fetch(`${apiBase}/feedback/${feedbackId}/respond`, {
                 method: 'PUT',
@@ -212,7 +218,13 @@ async function loadFeedbacks() {
             feedbacks = await apiClient.request('/feedback/', { method: 'GET' });
         } else {
             // fallback fetch - use dynamic hostname
-            const apiBase = `${window.location.protocol}//${window.location.hostname}:8000`;
+            const host = window.location.hostname;
+            const stored = localStorage.getItem('api_base_url');
+            const isHostedEnv = /\.(workers\.dev|pages\.dev|onrender\.com)$/i.test(host);
+            const invalidStored = isHostedEnv && /(workers\.dev|pages\.dev|onrender\.com):8000/i.test(stored || '');
+            const apiBase = (!invalidStored && stored) || (isHostedEnv
+                ? 'https://cocoguard-api.onrender.com'
+                : `${window.location.protocol}//${host}:8000`);
             const token = localStorage.getItem('token');
             const response = await fetch(`${apiBase}/feedback/`, {
                 headers: token ? { 'Authorization': `Bearer ${token}` } : {}

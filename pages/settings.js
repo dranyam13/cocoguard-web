@@ -13,9 +13,16 @@
 
     console.log('⚙️ Settings page script loaded v2.0');
 
-    // Use window to avoid redeclaration - use dynamic hostname
+    // Use window to avoid redeclaration.
+    // Prefer stored API URL; in hosted env default to Render backend.
     if (typeof window.API_BASE_URL === 'undefined') {
-        window.API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
+        const host = window.location.hostname;
+        const stored = localStorage.getItem('api_base_url');
+        const isHostedEnv = /\.(workers\.dev|pages\.dev|onrender\.com)$/i.test(host);
+        const invalidStored = isHostedEnv && /(workers\.dev|pages\.dev|onrender\.com):8000/i.test(stored || '');
+        window.API_BASE_URL = (!invalidStored && stored) || (isHostedEnv
+            ? 'https://cocoguard-api.onrender.com'
+            : `${window.location.protocol}//${host}:8000`);
     }
     const API_BASE_URL = window.API_BASE_URL;
     

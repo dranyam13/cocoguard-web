@@ -23,8 +23,8 @@ const COCOGUARD_CONFIG = {
     if (!COCOGUARD_CONFIG.API_URL) {
         const hostname = window.location.hostname;
         
-        // Production detection: if running on Render or Cloudflare Pages
-        if (hostname.includes('.onrender.com') || hostname.includes('.pages.dev')) {
+        // Production detection: if running on Render, Cloudflare Pages, or Workers
+        if (hostname.includes('.onrender.com') || hostname.includes('.pages.dev') || hostname.includes('.workers.dev')) {
             // Production: Use the backend URL (update after first deployment)
             // You need to update this after deploying the backend
             const backendName = 'cocoguard-api'; // Change if your service name is different

@@ -5,19 +5,34 @@
 
 class CocoGuardAPI {
     constructor(baseURL = null) {
-        // Dynamically detect API URL based on current hostname
-        // Works for: localhost, LAN IP, mobile hotspot, any network
+        // Dynamically detect API URL based on current hostname.
+        // Production (workers/pages/render) must call the Render backend.
         const host = window.location.hostname;
         const port = 8000;
         const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
+        const productionApi = 'https://cocoguard-api.onrender.com';
+        const isHostedEnv = /\.(workers\.dev|pages\.dev|onrender\.com)$/i.test(host);
+        const detectedUrl = isHostedEnv ? productionApi : `${protocol}://${host}:${port}`;
+
+        const isInvalidHostedStoredUrl = (url) => {
+            if (!url) return false;
+            return /(workers\.dev|pages\.dev|onrender\.com):8000/i.test(url);
+        };
         
         // Use custom URL from storage if set, otherwise auto-detect
         const storedUrl = localStorage.getItem('api_base_url');
-        if (storedUrl) {
+        if (baseURL) {
+            this.baseURL = baseURL;
+        } else if (storedUrl && !(isHostedEnv && isInvalidHostedStoredUrl(storedUrl))) {
             this.baseURL = storedUrl;
         } else {
-            this.baseURL = `${protocol}://${host}:${port}`;
+            this.baseURL = detectedUrl;
+            localStorage.setItem('api_base_url', this.baseURL);
         }
+
+        // Expose resolved API URL for legacy page modules.
+        window.API_BASE_URL = this.baseURL;
+        window.KNOWLEDGE_API_BASE_URL = this.baseURL;
         
         console.log('API Client initialized with URL:', this.baseURL);
         this.token = localStorage.getItem('access_token');
