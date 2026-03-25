@@ -47,7 +47,6 @@ function openEditPestModal(pest) {
     pestEditId.value = pest.id;
     document.getElementById('pestName').value = pest.name || '';
     document.getElementById('scientificName').value = pest.scientific_name || '';
-    document.getElementById('riskLevel').value = pest.risk_level ? pest.risk_level.toLowerCase() : '';
     document.getElementById('isActive').checked = pest.is_active !== false;
     addPestModal.style.display = 'flex';
 }
@@ -75,7 +74,7 @@ async function handlePestFormSubmit(e) {
         const pestData = {
             name: document.getElementById('pestName').value.trim(),
             scientific_name: document.getElementById('scientificName').value.trim() || null,
-            risk_level: document.getElementById('riskLevel').value,
+            risk_level: 'medium', // Default risk level - determined by model detection
             is_active: document.getElementById('isActive').checked
         };
         
@@ -84,10 +83,6 @@ async function handlePestFormSubmit(e) {
         // Validate required fields
         if (!pestData.name) {
             alert('Please enter a pest name');
-            return;
-        }
-        if (!pestData.risk_level) {
-            alert('Please select a risk level');
             return;
         }
         
