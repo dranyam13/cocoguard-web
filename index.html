@@ -16,7 +16,9 @@
         <script>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/cocoguard_web/service-worker.js')
+                    const isLocalSubdir = window.location.pathname.startsWith('/cocoguard_web/');
+                    const swPath = isLocalSubdir ? '/cocoguard_web/service-worker.js' : '/service-worker.js';
+                    navigator.serviceWorker.register(swPath)
                         .then(function(reg) { console.log('Service Worker registered!', reg); })
                         .catch(function(err) { console.log('Service Worker registration failed:', err); });
                 });
