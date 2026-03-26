@@ -76,6 +76,11 @@ class CocoGuardAPI {
             headers,
         };
 
+        const controller = new AbortController();
+        const timeoutMs = 30000;
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        config.signal = controller.signal;
+
         if (options.body) {
             config.body = JSON.stringify(options.body);
         }
@@ -96,8 +101,13 @@ class CocoGuardAPI {
             const data = await response.json();
             return data;
         } catch (error) {
+            if (error && error.name === 'AbortError') {
+                throw new Error('Request timed out. Please try again.');
+            }
             console.error('API Request Error:', error);
             throw error;
+        } finally {
+            clearTimeout(timeoutId);
         }
     }
 
