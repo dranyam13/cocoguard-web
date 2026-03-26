@@ -1,7 +1,7 @@
 // Service Worker for CocoGuard Web App
 // Caches static assets and API responses for offline use
 
-const CACHE_NAME = 'cocoguard-cache-v1';
+const CACHE_NAME = 'cocoguard-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -19,10 +19,16 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   const { request } = event;
-  // Cache-first for static assets
+  // Network-first for static assets to avoid stale JS after deployments.
   if (STATIC_ASSETS.some(asset => request.url.endsWith(asset))) {
     event.respondWith(
-      caches.match(request).then(response => response || fetch(request))
+      fetch(request)
+        .then(response => {
+          const resClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, resClone));
+          return response;
+        })
+        .catch(() => caches.match(request))
     );
     return;
   }
